@@ -94,7 +94,7 @@ async def batch_rename_handler(c: Client, m: Message):
                             await fwd_msg.delete()
                                                                             
                         except Exception as e:
-                            print(e.message)
+                            print(e)
                             fail+=1
                         await asyncio.sleep(1)
                     else:
