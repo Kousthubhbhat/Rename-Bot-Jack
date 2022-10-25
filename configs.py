@@ -28,3 +28,9 @@ class Config(object):
     TO_CHANNEL = int(os.environ.get("TO_CHANNEL", ""))
     USERNAME = os.environ.get("USERNAME", "")
     TAG = os.environ.get("TAG", "")
+    LIMIT_IN_MB = int(os.environ.get("LIMIT_IN_MB", "100"))
+    #  Replit Config for Hosting in Replit
+    REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None) # your replit username 
+    REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None) # your replit app name 
+    REPLIT = f"https://{REPLIT_APP_NAME.lower()}.{REPLIT_USERNAME}.repl.co" if REPLIT_APP_NAME and REPLIT_USERNAME else False
+    PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))

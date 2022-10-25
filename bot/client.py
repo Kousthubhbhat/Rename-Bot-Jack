@@ -10,6 +10,28 @@ from bot.core.db.database import db
 LOGGER = Config.LOGGER
 log = LOGGER.getLogger(__name__)
 
+if Config.REPLIT:
+    from threading import Thread
+
+    from flask import Flask, jsonify
+    
+    app = Flask('')
+    
+    @app.route('/')
+    def main():
+        res = {
+            "status":"running",
+            "hosted":"replit.com",
+        }
+        
+        return jsonify(res)
+
+    def run():
+      app.run(host="0.0.0.0", port=8000)
+    
+    async def keep_alive():
+      server = Thread(target=run)
+      server.start()
 
 class Client(RawClient, New):
     """ Custom Bot Class """
@@ -26,6 +48,9 @@ class Client(RawClient, New):
         )
 
     async def start(self):
+        if Config.REPLIT:
+            await keep_alive()
+
         await super().start()
         if not await db.get_bot_stats():
             await db.create_stats()

@@ -91,12 +91,8 @@ async def handle_big_rename(
             thumb = None
         mime_type = m.reply_to_message.audio.mime_type or "audio/mpeg"
         duration = m.reply_to_message.audio.duration or None
-        performer = m.reply_to_message.audio.performer \
-            if m.reply_to_message.audio.performer \
-            else None
-        title = m.reply_to_message.audio.title \
-            if m.reply_to_message.audio.title \
-            else None
+        performer = m.reply_to_message.audio.performer or None
+        title = m.reply_to_message.audio.title or None
 
         media = raw.types.InputMediaUploadedDocument(
             mime_type=mime_type,
@@ -151,7 +147,7 @@ async def handle_big_rename(
     else:
         caption = ""
     parse_mode = "Markdown"
-
+    caption = caption.format(filename=file_name)
     try:
         r = await c.send(
             raw.functions.messages.SendMedia(
