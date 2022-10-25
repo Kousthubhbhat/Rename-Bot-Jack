@@ -52,8 +52,13 @@ class Client(RawClient, New):
             await keep_alive()
 
         await super().start()
-        if not await db.get_bot_stats():
+        config = await db.get_bot_stats()
+        if not config:
             await db.create_stats()
+
+        if "on_progress" not in config.keys():
+            await db.update_stats({"on_progress":[]})
+
         log.info("Bot Started!")
 
     async def stop(self, *args):

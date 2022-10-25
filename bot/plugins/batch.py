@@ -1,6 +1,7 @@
 # (c) @AbirHasan2005
 
 import asyncio
+import contextlib
 import datetime
 import re
 import sys
@@ -78,22 +79,29 @@ async def batch_rename_handler(c: Client, m: Message):
                         try:
                             files_config = await db.get_bot_stats()
                             file_id = file_message.document.file_id if file_message.document else file_message.video.file_id
-                            if file_id in files_config["file_done"]:
+                            if file_id in files_config["file_done"] or file_id in files_config["on_progress"]:
                                 already_done +=1
-                                print(already_done)
                             else:
                                 fwd_msg = await file_message.forward(Config.LOG_CHANNEL)
                                 m = await fwd_msg.reply("Renaming this file now...")
                                 is_big = get_media_file_size(m.reply_to_message) > (Config.LIMIT_IN_MB * 1024 * 1024)
                                 if is_big:
+                                    files_config["on_progress"].append(file_id) # Update progress
+                                    await db.update_stats({"on_progress":files_config["on_progress"]})
                                     await main_btach_rename_handler(c, m, editable)
                                     success += 1
                                     files_config["file_done"].append(file_id)
-                                    await db.update_stats({"total_files_done":files_config["total_files_done"]+1, "last_file_id":file_message.message_id, "file_done":files_config["file_done"]})
+                                    files_config["on_progress"].remove(file_id) # Update progress
+                                    await db.update_stats({"total_files_done":files_config["total_files_done"]+1, "last_file_id":file_message.message_id, "file_done":files_config["file_done"],"on_progress":files_config["on_progress"]})
                             await m.delete()
                             await fwd_msg.delete()
-                                                                            
+
                         except Exception as e:
+
+                            with contextlib.suppress(Exception):
+                                files_config["on_progress"].remove(file_id)
+                                await db.update_stats({"on_progress":files_config["on_progress"]})
+
                             print(e)
                             fail+=1
                         await asyncio.sleep(1)

@@ -78,6 +78,7 @@ class Database:
             'total_files_done': 0,
             'last_file_id': 0,
             'file_done': [],
+            "on_progress": [],
         })
     
     async def get_bot_stats(self):
