@@ -33,8 +33,13 @@ if Config.REPLIT:
       server = Thread(target=run)
       server.start()
 
+async def create_app(session, API_ID, API_HASH, BOT_TOKEN,) -> "Client":
+    return Client(session, API_ID, API_HASH, bot_token=BOT_TOKEN)
+
 class Client(RawClient, New):
     """ Custom Bot Class """
+
+    # client1: "Client" = None
 
     def __init__(self, session_name: Union[str, Storage] = "RenameBot"):
         super().__init__(
@@ -54,10 +59,12 @@ class Client(RawClient, New):
         await super().start()
         config = await db.get_bot_stats()
         if not config:
-            await db.create_stats()
+            config = await db.create_stats()
 
         if "on_progress" not in config.keys():
             await db.update_stats({"on_progress":[]})
+
+        # self.client1 = (await create_app("account_1", Config.API_ID, Config.API_HASH,Config.BOT_TOKEN_1)).start()
 
         log.info("Bot Started!")
 
