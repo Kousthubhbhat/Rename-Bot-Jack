@@ -13,8 +13,8 @@ logging.basicConfig(
 from dotenv import load_dotenv
 load_dotenv()
 class Config(object):
-    API_ID = int(os.environ.get("API_ID", ""))
-    API_HASH = os.environ.get("API_HASH", "")
+    API_ID = int(os.environ.get("API_ID", "8813038"))
+    API_HASH = os.environ.get("API_HASH", "780fd96b159baa710dada78ff1621b54")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
     # BOT_TOKEN_1 = os.environ.get("BOT_TOKEN_1", "")
     DOWNLOAD_DIR = os.environ.get("DOWNLOAD_DIR", "./downloads")
