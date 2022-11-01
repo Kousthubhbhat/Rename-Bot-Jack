@@ -59,7 +59,8 @@ class Client(RawClient, New):
         await super().start()
         config = await db.get_bot_stats()
         if not config:
-            config = await db.create_stats()
+            await db.create_stats()
+            config = await db.get_bot_stats()
 
         if "on_progress" not in config.keys():
             await db.update_stats({"on_progress":[]})
