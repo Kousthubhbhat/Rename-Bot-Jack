@@ -15,7 +15,7 @@ load_dotenv()
 class Config(object):
     API_ID = int(os.environ.get("API_ID", "8813038"))
     API_HASH = os.environ.get("API_HASH", "780fd96b159baa710dada78ff1621b54")
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "5424021965:AAEddgQ3IOm5nchqknI6CZZ4wrJ5Gcy9tkM")
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "5666715908:AAH0qh1Aimd12t7Q03jqFwJIhJ_Bs9hHU2g")
     # BOT_TOKEN_1 = os.environ.get("BOT_TOKEN_1", "")
     DOWNLOAD_DIR = os.environ.get("DOWNLOAD_DIR", "./downloads")
     LOGGER = logging
